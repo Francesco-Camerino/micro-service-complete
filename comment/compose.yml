@@ -1,0 +1,31 @@
+version: '3'
+services:
+  commentApp:
+    image: myapplication
+    build: .
+    ports:
+      - "8081:8081"
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/micro-service-complete
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create
+  postgres:
+    image: postgres
+    restart: always
+    volumes:
+      - data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=pippo
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=micro-service-complete
+
+volumes:
+  data:
+    external:
+      name: postgres
